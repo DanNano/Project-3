@@ -32,106 +32,108 @@ int main()
 		{
 			if (input2 == "-1")
 				break;
-			if (input2 == "AL")
+			else if (input2 == "AL")
 				state.AL();
-			if (input2 == "AK")
+			else if (input2 == "AK")
 				state.AK();
-			if (input2 == "AZ")
+			else if (input2 == "AZ")
 				state.AZ();
-			if (input2 == "AR")
+			else if (input2 == "AR")
 				state.AR();
-			if (input2 == "CA")
+			else if (input2 == "CA")
 				state.CA();
-			if (input2 == "CO")
+			else if (input2 == "CO")
 				state.CO();
-			if (input2 == "CT")
+			else if (input2 == "CT")
 				state.CT();
-			if (input2 == "DE")
+			else if (input2 == "DE")
 				state.DE();
-			if (input2 == "FL")
+			else if (input2 == "FL")
 				state.FL();
-			if (input2 == "GA")
+			else if (input2 == "GA")
 				state.GA();
-			if (input2 == "HI")
+			else if (input2 == "HI")
 				state.HI();
-			if (input2 == "ID")
+			else if (input2 == "ID")
 				state.ID();
-			if (input2 == "IL")
+			else if (input2 == "IL")
 				state.IL();
-			if (input2 == "IN")
+			else if (input2 == "IN")
 				state.IN();
-			if (input2 == "IA")
+			else if (input2 == "IA")
 				state.IA();
-			if (input2 == "KA")
+			else if (input2 == "KA")
 				state.KA();
-			if (input2 == "KY")
+			else if (input2 == "KY")
 				state.KY();
-			if (input2 == "LA")
+			else if (input2 == "LA")
 				state.LA();
-			if (input2 == "ME")
+			else if (input2 == "ME")
 				state.ME();
-			if (input2 == "MD")
+			else if (input2 == "MD")
 				state.MD();
-			if (input2 == "MA")
+			else if (input2 == "MA")
 				state.MA();
-			if (input2 == "MI")
+			else if (input2 == "MI")
 				state.MI();
-			if (input2 == "MN")
+			else if (input2 == "MN")
 				state.MN();
-			if (input2 == "MS")
+			else if (input2 == "MS")
 				state.MS();
-			if (input2 == "MO")
+			else if (input2 == "MO")
 				state.MO();
-			if (input2 == "MT")
+			else if (input2 == "MT")
 				state.MT();
-			if (input2 == "NE")
+			else if (input2 == "NE")
 				state.NE();
-			if (input2 == "NV")
+			else if (input2 == "NV")
 				state.NV();
-			if (input2 == "NH")
+			else if (input2 == "NH")
 				state.NH();
-			if (input2 == "NJ")
+			else if (input2 == "NJ")
 				state.NJ();
-			if (input2 == "NM")
+			else if (input2 == "NM")
 				state.NM();
-			if (input2 == "NY")
+			else if (input2 == "NY")
 				state.NY();
-			if (input2 == "NC")
+			else if (input2 == "NC")
 				state.NC();
-			if (input2 == "ND")
+			else if (input2 == "ND")
 				state.ND();
-			if (input2 == "OH")
+			else if (input2 == "OH")
 				state.OH();
-			if (input2 == "OK")
+			else if (input2 == "OK")
 				state.OK();
-			if (input2 == "OR")
+			else if (input2 == "OR")
 				state.OR();
-			if (input2 == "PA")
+			else if (input2 == "PA")
 				state.PA();
-			if (input2 == "RI")
+			else if (input2 == "RI")
 				state.RI();
-			if (input2 == "SC")
+			else if (input2 == "SC")
 				state.SC();
-			if (input2 == "SD")
+			else if (input2 == "SD")
 				state.SD();
-			if (input2 == "TN")
+			else if (input2 == "TN")
 				state.TN();
-			if (input2 == "TX")
+			else if (input2 == "TX")
 				state.TX();
-			if (input2 == "UT")
+			else if (input2 == "UT")
 				state.UT();
-			if (input2 == "VT")
+			else if (input2 == "VT")
 				state.VT();
-			if (input2 == "VA")
+			else if (input2 == "VA")
 				state.VA();
-			if (input2 == "WA")
+			else if (input2 == "WA")
 				state.WA();
-			if (input2 == "WV")
+			else if (input2 == "WV")
 				state.WV();
-			if (input2 == "WI")
+			else if (input2 == "WI")
 				state.WI();
-			if (input2 == "WY")
+			else if (input2 == "WY")
 				state.WY();
+			else
+				"Please enter a state abreviation or enter -1";
 
 			cout << "Please enter another state to view or -1 to exit: ";
 			cin >> input2;
@@ -161,18 +163,26 @@ int main()
 				year.year2022();
 				cout << endl;
 			}
+			else if (inputYear == -1)
+			{
+				break;
+			}
 			else
 			{
 				cout << "Please enter a correct year: " << endl;
 			}
 
-			cout << "Please enter another year to view another: ";
+			cout << "Please enter another year to view another or -1 to quit: ";
 			cin >> inputYear;
 			cout << endl;
 		}
-    }
+	}
+	else if (input == "-1")
+	{
+		break;
+	}
 	else
 	{
-	cout << "Please enter again: ";
- }
+	  cout << "Please enter again or -1 to exit program: ";
+        }
 }
