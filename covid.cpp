@@ -2,24 +2,120 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+#include <sstream>
 using namespace std;
 
-vector<Covid> Covid::covidData;
 
+set<string> Covid::stateOptions;
+set<string> Covid::yearOptions;
+vector<Covid*> Covid::covidData;
+map<string, vector<Covid*> > Covid::stateData;
+map<string, vector<Covid*> > Covid::yearData;
 map<string, map<string, int> > Covid::conditionAGM; //condition age group map
+map<string, string> Covid::states ={{"AL",  "Alabama"},
+                             {"AK",  "Alaska"},
+                             {"AZ",  "Arizona"},
+                             {"AR",  "Arkansas"},
+                             {"CA",  "California"},
+                             {"CO",  "Colorado"},
+                             {"CT",  "Connecticut"},
+                             {"DE",  "Delaware"},
+                             {"DC",  "District of Columbia"},
+                             {"FL",  "Florida"},
+                             {"GA",  "Georgia"},
+                             {"HI",  "Hawaii"},
+                             {"ID",  "Idaho"},
+                             {"IL",  "Illinois"},
+                             {"IN",  "Indiana"},
+                             {"IA",  "Iowa"},
+                             {"KA",  "Kansas"},
+                             {"KY",  "Kentucky"},
+                             {"LA",  "Louisiana"},
+                             {"ME",  "Maine"},
+                             {"MD",  "Maryland"},
+                             {"MA",  "Massachusetts"},
+                             {"MI",  "Michigan"},
+                             {"MN",  "Minnesota"},
+                             {"MS",  "Mississippi"},
+                             {"MO",  "Missouri"},
+                             {"MT",  "Montana"},
+                             {"NE",  "Nebraska"},
+                             {"NV",  "Nevada"},
+                             {"NH",  "New Hampshire"},
+                             {"NJ",  "New Jersey"},
+                             {"NM",  "New Mexico"},
+                             {"NY",  "New York"},
+                             {"NYC", "New York City"},
+                             {"NC",  "North Carolina"},
+                             {"ND",  "North Dakota"},
+                             {"OH",  "Ohio"},
+                             {"OK",  "Oklahoma"},
+                             {"OR",  "Oregon"},
+                             {"PA",  "Pennsylvania"},
+                             {"RI",  "Rhode Island"},
+                             {"SC",  "South Carolina"},
+                             {"SD",  "South Dakota"},
+                             {"TN",  "Tennessee"},
+                             {"TX",  "Texas"},
+                             {"UT",  "Utah"},
+                             {"VT",  "Vermont"},
+                             {"VA",  "Virginia"},
+                             {"WA",  "Washington"},
+                             {"WV",  "West Virginia"},
+                             {"WI",  "Wisconsin"},
+                             {"WY", "Wyoming"},
+                             {"PR", "Puerto Rico"}
+};
 
+void Covid::addStateData(Covid* covid){
+    string state = covid->getState();
+    stateOptions.insert(state);
+    if(stateData.find(state) == stateData.end()){
 
-void Covid::addStateData(Covid& covid){
-
+        vector<Covid*> states;
+        stateData[state] = states;
+    }
+    stateData[state].push_back(covid);
 }
-
-void  Covid::addYearData(Covid& covid){
-
+string Covid::getStateAbrev(string name) {
+	for(auto it = states.begin(); it!= states.end(); it++) {
+		if(it->second == name) return it->first;
+	}
+	return "";
 }
-void Covid::addCondition(Covid& covid){
-    string condition = covid.getCondition();
-    string ageGroup = covid.getAG();
-    int deaths = covid.getCovidDeaths();
+void Covid::printStateOptions(){
+	int i = 0;
+	for(auto it= stateOptions.begin(); it!= stateOptions.end(); it++) {
+		cout << setw(15) <<right << *it;
+		string abrev = getStateAbrev(*it);
+		cout << " ("<< abrev<<") ";
+		i++;
+		if(i%4==0) {
+			cout << endl;
+		}
+	}
+}
+void Covid::printYearOptions(){
+
+	for(auto it= yearOptions.begin(); it!= yearOptions.end(); it++) {
+		cout << *it << ":  ";
+
+	}
+}
+void  Covid::addYearData(Covid* covid){
+    string year = covid->getYear();
+    yearOptions.insert(year);
+    if(yearData.find(year) == yearData.end()){
+     //   cout << "Added year " << year << endl;
+        vector<Covid*> years;
+        yearData[year] = years;
+    }
+    yearData[year].push_back(covid);
+}
+void Covid::addCondition(Covid* covid){
+    string condition = covid->getCondition();
+    string ageGroup = covid->getAgeGroup();
+    int deaths = covid->getCovidDeaths();
 
     if(conditionAGM.find(condition) == conditionAGM.end()){
         map<string, int> conditionMap;
@@ -44,8 +140,8 @@ void Covid::readFile(const string& fileName){
         getline(ifs, row);
        // cout << row << endl;
 
-        Covid covid(row);
-        covidData.push_back(row);
+        Covid* covid = new Covid(row);
+        covidData.push_back(covid);
         addCondition(covid);
         addStateData(covid);
         addYearData(covid);
@@ -132,7 +228,7 @@ Covid::Covid(const string& row){
     }
 }
 
-string Covid::getAG(){
+string Covid::getAgeGroup(){
     return ageGroup;
 }
 string Covid::getCondition(){
@@ -147,18 +243,18 @@ int Covid:: getCovidDeaths(){
    }
 }
 
-void Covid::print(){
-    string ages[] ={"0-24", "25-34", "35-44", "45-54", "55-64", "65-74", "75-84", "85+"};
+void Covid::print() {
+    string ages[] = {"0-24", "25-34", "35-44", "45-54", "55-64", "65-74", "75-84", "85+"};
 
-    cout << "AGM SIze ="<< conditionAGM.size() << endl;
+  //  cout << "AGM SIze =" << conditionAGM.size() << endl;
     cout << setw(45) << " ";
 
-    for(int i = 0; i < 8; i++){
+    for (int i = 0; i < 8; i++) {
         cout << setw(10) << ages[i];
     }
     cout << endl;
 
-    for(auto it = conditionAGM.begin(); it!= conditionAGM.end(); it++) {
+    for (auto it = conditionAGM.begin(); it != conditionAGM.end(); it++) {
         if (it->first.size() > 0) {
 
             cout << setw(45) << it->first;
@@ -186,5 +282,77 @@ void Covid::print(){
         cout << setw(10) << covidData[i].flag;
         cout << endl;
     } */
+}
+string Covid::getDataAsOf(){
+    return dataAsOf;
+}
+string  Covid::getStartDate(){
+    return startDate;
+}
+string Covid:: getEndDate(){
+    return endDate;
+}
+string Covid:: getGroup(){
+    return group;
+}
+string Covid:: getYear(){
+    return year;
+}
+string Covid:: getMonth(){
+    return month;
+}
+string Covid:: getState(){
+    return state;
+}
+string Covid:: getConditionGroup(){
+    return conditionGroup;
+}
+string Covid:: getIcd10_codes(){
+    return icd10_codes;
+}
+string Covid:: getNumberofMentions(){
+    return numberofMentions;
+}
+string Covid:: getFlag(){
+    return flag;
+}
+
+    void Covid::printRow(){
+        cout << setw(15) << dataAsOf << setw(15) << startDate << setw(15) << endDate << setw(10) << group << setw(10) << year
+        << setw(4) << month << setw(4) << conditionGroup << setw(45) << condition <<setw(15) << icd10_codes << setw(10) << ageGroup
+        << setw(10) << covidDeaths << endl;
+        /* string dataAsOf;
+    string startDate;
+    string endDate;
+    string group;
+    string year;
+    string month;
+    string state;
+    string conditionGroup;
+    string condition;
+    string icd10_codes;
+    string ageGroup;
+    string covidDeaths;
+    string numberofMentions;
+    string flag; */
+    }
+
+    void Covid::printState(const string& input2){
+    cout << "Print state " << input2 << endl;
+    string state = states[input2];
+    cout << state << endl;
+        for(int i = 0; i < stateData[state].size(); i++){
+            stateData[state][i]->printRow();
+        }
+    }
+  void  Covid::printYear(int input2){
+      cout << "Print year " << input2 << endl;
+      stringstream ss;
+      ss << input2;
+      string year = ss.str();
+      cout << year << endl;
+      for(int i = 0; i < yearData[year].size(); i++){
+          yearData[year][i]->printRow();
+      }
 }
 
